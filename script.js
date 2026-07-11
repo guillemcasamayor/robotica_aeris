@@ -4,7 +4,7 @@ const avatars = {
     ballerina: { emoji: '💃', goal: '🎵', name: 'Ballerina', bgClass: 'bg-ballerina', wallClass: 'wall-generic', wallEmoji: '🧱' },
     robot: { emoji: '🛵', goal: '🔋', name: 'Moto Kawaii', bgClass: 'bg-robot', wallClass: 'wall-generic', wallEmoji: '🚧' },
     space: { emoji: '🚀', goal: '⭐', name: 'Nau Espacial', bgClass: 'bg-space', wallClass: 'wall-space', wallEmoji: '🪨' },
-    rumi: { emoji: '🐱', goal: '🍜', name: 'Rumi', bgClass: 'bg-rumi', wallClass: 'wall-generic', wallEmoji: '🍱' }
+    rumi: { emoji: '<img src="https://ih1.redbubble.net/image.5955658826.6777/raf,360x360,075,t,fafafa:ca443f4786.jpg" class="avatar-img" alt="Rumi">', goal: '🍜', name: 'Rumi', bgClass: 'bg-rumi', wallClass: 'wall-generic', wallEmoji: '👹' }
 };
 
 let currentAvatarId = 'turtle';

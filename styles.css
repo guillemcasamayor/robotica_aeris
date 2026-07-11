@@ -95,6 +95,14 @@ body {
     font-size: 3rem;
 }
 
+.btn-avatar-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 5px;
+}
+
 .avatar-name {
     margin-top: 5px;
     font-family: 'Outfit', sans-serif;
@@ -272,7 +280,9 @@ body {
 }
 
 .bg-rumi {
-    background: repeating-linear-gradient(45deg, #ffcc99, #ffcc99 15px, #ffb366 15px, #ffb366 30px);
+    background: #1a0033;
+    background-image: repeating-linear-gradient(45deg, rgba(255, 0, 127, 0.2), rgba(255, 0, 127, 0.2) 15px, rgba(0, 255, 204, 0.2) 15px, rgba(0, 255, 204, 0.2) 30px);
+    box-shadow: inset 0 0 20px rgba(255, 0, 127, 0.5);
 }
 
 /* Obstacles */
@@ -312,6 +322,13 @@ body {
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     z-index: 10;
     filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.5));
+}
+
+.avatar-img {
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 /* Controls Area */
