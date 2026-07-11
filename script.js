@@ -564,6 +564,15 @@ function checkGoal() {
             score += 10;
             scoreVal.textContent = score;
             document.getElementById('success-message').textContent = `Ho has aconseguit, ${playerName}!`;
+            
+            const successGif = document.getElementById('success-gif');
+            if (currentAvatarId === 'rumi') {
+                successGif.src = "https://media1.tenor.com/m/7ayQdoRR7K4AAAAd/eating-noodles-rumi.gif";
+                successGif.classList.remove('hidden');
+            } else {
+                successGif.classList.add('hidden');
+            }
+            
             document.getElementById('success-modal').classList.remove('hidden');
         } else {
             showFail(`Et falten ${totalItems - collectedItems} objectes per recollir!`);
