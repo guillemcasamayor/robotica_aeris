@@ -2,7 +2,7 @@
 const avatars = {
     turtle: { emoji: '🐢', goal: '🥬', name: 'Tortuga', bgClass: 'bg-turtle', wallClass: 'wall-generic', wallEmoji: '🧱' },
     ballerina: { emoji: '💃', goal: '🎵', name: 'Ballerina', bgClass: 'bg-ballerina', wallClass: 'wall-generic', wallEmoji: '🧱' },
-    robot: { emoji: '👾', goal: '🔋', name: 'Robot Kawaii', bgClass: 'bg-robot', wallClass: 'wall-generic', wallEmoji: '🚧' },
+    robot: { emoji: '🛵', goal: '🔋', name: 'Moto Kawaii', bgClass: 'bg-robot', wallClass: 'wall-generic', wallEmoji: '🚧' },
     space: { emoji: '🚀', goal: '⭐', name: 'Nau Espacial', bgClass: 'bg-space', wallClass: 'wall-space', wallEmoji: '🪨' }
 };
 
