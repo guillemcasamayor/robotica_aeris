@@ -10,6 +10,7 @@ const avatars = {
 let currentAvatarId = 'turtle';
 let currentMode = 'programming'; // 'programming' o 'piloting'
 let playMode = 'normal'; // 'normal' o 'random'
+let itemsMode = 'single'; // 'single' o 'multiple'
 
 // Més nivells amb graelles grans
 const levels = {
@@ -82,8 +83,11 @@ function generateProceduralLevel(size) {
             }
         }
         
-        // Posa ítems aleatoris (entre 2 i 4)
-        let numItems = Math.floor(Math.random() * 3) + 2; 
+        // Posa ítems aleatoris (entre 2 i 4) només si itemsMode és multiple
+        let numItems = 0;
+        if (itemsMode === 'multiple') {
+            numItems = Math.floor(Math.random() * 3) + 2; 
+        }
         let placedItems = 0;
         let attempts = 0;
         while (placedItems < numItems && attempts < 100) {
@@ -145,13 +149,23 @@ document.querySelectorAll('.avatar-btn').forEach(btn => {
     });
 });
 
-// Gestió de selecció de mode
+// Gestió de selecció de mode de moviment
 document.querySelectorAll('.mode-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
         const btnElement = e.target.closest('.mode-btn');
         btnElement.classList.add('selected');
         currentMode = btnElement.dataset.mode;
+    });
+});
+
+// Gestió de selecció de modalitat d'ítems
+document.querySelectorAll('.items-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.items-btn').forEach(b => b.classList.remove('selected'));
+        const btnElement = e.target.closest('.items-btn');
+        btnElement.classList.add('selected');
+        itemsMode = btnElement.dataset.items;
     });
 });
 
@@ -270,6 +284,21 @@ function startGame(levelId) {
         currentLevel = 'random';
     } else {
         levelData = levels[levelId];
+        if (itemsMode === 'multiple') {
+            levelData = JSON.parse(JSON.stringify(levels[levelId])); // Deep copy
+            let size = levelData.gridSize;
+            let numItems = size >= 6 ? Math.floor(Math.random() * 3) + 2 : 1; 
+            levelData.items = [];
+            
+            let reachable = getReachableCells(levelData, size);
+            reachable = reachable.filter(r => !(r.x === levelData.start.x && r.y === levelData.start.y) && !(r.x === levelData.goal.x && r.y === levelData.goal.y));
+            
+            for (let i = 0; i < numItems && reachable.length > 0; i++) {
+                let idx = Math.floor(Math.random() * reachable.length);
+                levelData.items.push(reachable[idx]);
+                reachable.splice(idx, 1);
+            }
+        }
     }
     
     levelTitle.textContent = levelData.title;
