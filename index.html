@@ -11,13 +11,26 @@
 </head>
 <body>
     <div id="app">
-        <!-- Main Menu -->
-        <div id="main-menu" class="screen active">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
             <header>
-                <h1>✨ Aventures de l'Aeris ✨</h1>
-                <p>Escull el teu personatge!</p>
+                <h1 style="font-size: 3.5rem; margin-bottom: 20px; text-align: center; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Benvingut/da a l'Aventura!</h1>
+            </header>
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="font-size: 1.8rem; margin-bottom: 20px;">Com et dius?</p>
+                <input type="text" id="player-name-input" placeholder="Escriu el teu nom..." style="font-size: 1.5rem; padding: 15px; border-radius: 15px; border: 2px solid var(--primary-color); background: var(--glass-bg); color: white; width: 80%; max-width: 300px; text-align: center; font-family: 'Outfit', sans-serif; margin-bottom: 30px;">
+                <br>
+                <button id="btn-submit-name" class="primary-btn" style="padding: 15px 40px; font-size: 1.5rem;">Som-hi! 🚀</button>
+            </div>
+        </div>
+
+        <!-- Main Menu -->
+        <div id="main-menu" class="screen">
+            <header>
+                <h1 id="menu-title">✨ Aventures de Robòtica ✨</h1>
             </header>
             
+            <p style="font-size: 1.2rem; margin-bottom: 10px;">Escull el teu personatge:</p>
             <div class="avatar-selector">
                 <button class="avatar-btn selected" data-avatar="turtle" data-emoji="🐢" data-goal="🥬">
                     <span class="avatar-emoji">🐢</span>
@@ -37,7 +50,7 @@
                 </button>
             </div>
 
-            <p style="margin-top: 10px; font-size: 1.2rem;">Escull el mode de joc:</p>
+            <p style="margin-top: 10px; font-size: 1.2rem; margin-bottom: 10px;">Com vols jugar?</p>
             <div class="mode-selector">
                 <button class="mode-btn selected" data-mode="programming">
                     <div class="mode-icon">🤖</div>
@@ -51,9 +64,9 @@
                 </button>
             </div>
 
-            <p style="margin-top: 20px;">A quin nivell vols jugar?</p>
-            <div class="level-selector" id="level-selector-container">
-                <!-- Levels injected by JS -->
+            <div class="start-buttons">
+                <button id="btn-start-normal" class="primary-btn big-start-btn">▶️ Jugar Aventura <br><span style="font-size:1rem; font-weight:normal">(Ordre Normal)</span></button>
+                <button id="btn-start-random" class="secondary-btn big-start-btn">🎲 Nivell Aleatori</button>
             </div>
         </div>
 
@@ -121,7 +134,7 @@
             <div id="success-modal" class="modal hidden">
                 <div class="modal-content glass-panel">
                     <h2>🎉 Visca! 🎉</h2>
-                    <p>Ho has aconseguit, Aeris!</p>
+                    <p id="success-message">Ho has aconseguit!</p>
                     <button id="btn-next-level" class="primary-btn">Següent ➡️</button>
                 </div>
             </div>

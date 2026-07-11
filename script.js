@@ -8,32 +8,43 @@ const avatars = {
 
 let currentAvatarId = 'turtle';
 let currentMode = 'programming'; // 'programming' o 'piloting'
+let playMode = 'normal'; // 'normal' o 'random'
 
-// Nivells de dificultat progressiva (Sense girs relatius, tot direccional)
+// Més nivells amb graelles grans
 const levels = {
-    1: { title: "Nivell 1: Tot recte", gridSize: 4, start: { x: 0, y: 1 }, goal: { x: 2, y: 1 }, obstacles: [] },
-    2: { title: "Nivell 2: Baixem", gridSize: 4, start: { x: 1, y: 0 }, goal: { x: 1, y: 3 }, obstacles: [] },
-    3: { title: "Nivell 3: En diagonal", gridSize: 4, start: { x: 0, y: 0 }, goal: { x: 2, y: 2 }, obstacles: [] },
-    4: { title: "Nivell 4: Un petit obstacle", gridSize: 4, start: { x: 0, y: 0 }, goal: { x: 3, y: 3 }, 
-         obstacles: [{x: 1, y: 1}] },
-    5: { title: "Nivell 5: El mur curt", gridSize: 5, start: { x: 0, y: 2 }, goal: { x: 4, y: 2 }, 
-         obstacles: [{x: 2, y: 1}, {x: 2, y: 2}, {x: 2, y: 3}] },
-    6: { title: "Nivell 6: Corba perillosa", gridSize: 5, start: { x: 0, y: 0 }, goal: { x: 4, y: 4 }, 
-         obstacles: [{x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}, {x: 2, y: 3}, {x: 2, y: 4}] },
-    7: { title: "Nivell 7: Dos camins", gridSize: 5, start: { x: 2, y: 0 }, goal: { x: 2, y: 4 }, 
-         obstacles: [{x: 1, y: 2}, {x: 2, y: 2}, {x: 3, y: 2}] },
-    8: { title: "Nivell 8: El gran laberint", gridSize: 5, start: { x: 0, y: 4 }, goal: { x: 4, y: 0 }, 
-         obstacles: [{x: 1, y: 4}, {x: 1, y: 3}, {x: 1, y: 2}, {x: 3, y: 2}, {x: 3, y: 1}, {x: 3, y: 0}] }
+    // 4x4
+    1: { title: "Nivell 1", gridSize: 4, start: { x: 0, y: 1 }, goal: { x: 2, y: 1 }, obstacles: [] },
+    2: { title: "Nivell 2", gridSize: 4, start: { x: 1, y: 0 }, goal: { x: 1, y: 3 }, obstacles: [] },
+    3: { title: "Nivell 3", gridSize: 4, start: { x: 0, y: 0 }, goal: { x: 2, y: 2 }, obstacles: [] },
+    4: { title: "Nivell 4", gridSize: 4, start: { x: 0, y: 0 }, goal: { x: 3, y: 3 }, obstacles: [{x: 1, y: 1}] },
+    // 5x5
+    5: { title: "Nivell 5", gridSize: 5, start: { x: 0, y: 2 }, goal: { x: 4, y: 2 }, obstacles: [{x: 2, y: 1}, {x: 2, y: 2}, {x: 2, y: 3}] },
+    6: { title: "Nivell 6", gridSize: 5, start: { x: 0, y: 0 }, goal: { x: 4, y: 4 }, obstacles: [{x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}, {x: 2, y: 3}, {x: 2, y: 4}] },
+    7: { title: "Nivell 7", gridSize: 5, start: { x: 2, y: 0 }, goal: { x: 2, y: 4 }, obstacles: [{x: 1, y: 2}, {x: 2, y: 2}, {x: 3, y: 2}] },
+    8: { title: "Nivell 8", gridSize: 5, start: { x: 0, y: 4 }, goal: { x: 4, y: 0 }, obstacles: [{x: 1, y: 4}, {x: 1, y: 3}, {x: 1, y: 2}, {x: 3, y: 2}, {x: 3, y: 1}, {x: 3, y: 0}] },
+    // 6x6
+    9: { title: "Nivell 9", gridSize: 6, start: { x: 0, y: 0 }, goal: { x: 5, y: 5 }, obstacles: [{x: 2, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}, {x: 2, y: 3}, {x: 4, y: 5}, {x: 4, y: 4}] },
+    10: { title: "Nivell 10", gridSize: 6, start: { x: 5, y: 0 }, goal: { x: 0, y: 5 }, obstacles: [{x: 4, y: 1}, {x: 3, y: 2}, {x: 2, y: 3}, {x: 1, y: 4}] },
+    11: { title: "Nivell 11", gridSize: 6, start: { x: 0, y: 3 }, goal: { x: 5, y: 3 }, obstacles: [{x: 2, y: 2}, {x: 2, y: 3}, {x: 2, y: 4}, {x: 4, y: 1}, {x: 4, y: 2}, {x: 4, y: 3}] },
+    // 7x7
+    12: { title: "Nivell 12", gridSize: 7, start: { x: 0, y: 0 }, goal: { x: 6, y: 6 }, obstacles: [{x: 3, y: 0}, {x: 3, y: 1}, {x: 3, y: 2}, {x: 3, y: 4}, {x: 3, y: 5}, {x: 3, y: 6}] },
+    13: { title: "Nivell 13", gridSize: 7, start: { x: 3, y: 3 }, goal: { x: 0, y: 0 }, obstacles: [{x: 2, y: 2}, {x: 3, y: 2}, {x: 4, y: 2}, {x: 2, y: 3}, {x: 4, y: 3}, {x: 2, y: 4}, {x: 3, y: 4}, {x: 4, y: 4}] },
+    14: { title: "Nivell 14", gridSize: 7, start: { x: 0, y: 6 }, goal: { x: 6, y: 0 }, obstacles: [{x: 1, y: 5}, {x: 2, y: 4}, {x: 3, y: 3}, {x: 4, y: 2}, {x: 5, y: 1}] },
+    // 8x8
+    15: { title: "Nivell 15", gridSize: 8, start: { x: 0, y: 0 }, goal: { x: 7, y: 7 }, obstacles: [{x: 1, y: 1}, {x: 2, y: 2}, {x: 3, y: 3}, {x: 4, y: 4}, {x: 5, y: 5}, {x: 6, y: 6}, {x: 1, y: 7}, {x: 2, y: 6}, {x: 3, y: 5}] },
+    16: { title: "Nivell 16", gridSize: 8, start: { x: 4, y: 7 }, goal: { x: 4, y: 0 }, obstacles: [{x: 0, y: 4}, {x: 1, y: 4}, {x: 2, y: 4}, {x: 3, y: 4}, {x: 5, y: 4}, {x: 6, y: 4}, {x: 7, y: 4}] },
+    17: { title: "Nivell 17", gridSize: 8, start: { x: 7, y: 0 }, goal: { x: 0, y: 7 }, obstacles: [{x: 6, y: 0}, {x: 6, y: 1}, {x: 6, y: 2}, {x: 4, y: 7}, {x: 4, y: 6}, {x: 4, y: 5}, {x: 2, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}] },
+    18: { title: "Nivell 18", gridSize: 8, start: { x: 0, y: 3 }, goal: { x: 7, y: 4 }, obstacles: [{x: 2, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}, {x: 2, y: 3}, {x: 5, y: 4}, {x: 5, y: 5}, {x: 5, y: 6}, {x: 5, y: 7}] }
 };
 
 let currentLevel = 1;
 let score = 0;
 let sequence = [];
 let isExecuting = false;
-
-// Estat del personatge (ja no cal 'dir' perquè no mirem cap on està encarat visualment per moure'ns, sempre mirem "a la dreta" per defecte, o podem actualitzar-ho si volem)
 let robotState = { x: 0, y: 0, dir: 0 }; 
+let playerName = "Jugador/a";
 
+const welcomeScreen = document.getElementById('welcome-screen');
 const mainMenu = document.getElementById('main-menu');
 const gameScreen = document.getElementById('game-screen');
 const gridElement = document.getElementById('grid');
@@ -42,24 +53,6 @@ const scoreVal = document.getElementById('score-val');
 const levelTitle = document.getElementById('level-title');
 const progControls = document.getElementById('prog-controls');
 const pilotControls = document.getElementById('pilot-controls');
-const levelSelectorContainer = document.getElementById('level-selector-container');
-
-// Inicialitzar botons de nivells
-function initLevelsMenu() {
-    levelSelectorContainer.innerHTML = '';
-    for(let i = 1; i <= Object.keys(levels).length; i++) {
-        const btn = document.createElement('button');
-        btn.classList.add('level-btn');
-        btn.dataset.level = i;
-        btn.innerText = `Nivell ${i}`;
-        btn.addEventListener('click', () => {
-            currentLevel = i;
-            startGame(i);
-        });
-        levelSelectorContainer.appendChild(btn);
-    }
-}
-initLevelsMenu();
 
 // Gestió de selecció de personatge
 document.querySelectorAll('.avatar-btn').forEach(btn => {
@@ -81,18 +74,49 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     });
 });
 
+// Start Flow
+document.getElementById('btn-submit-name').addEventListener('click', () => {
+    const input = document.getElementById('player-name-input').value.trim();
+    if (input) {
+        playerName = input;
+    }
+    welcomeScreen.classList.remove('active');
+    mainMenu.classList.add('active');
+    document.getElementById('menu-title').textContent = `✨ Aventures de ${playerName} ✨`;
+    document.getElementById('success-message').textContent = `Ho has aconseguit, ${playerName}!`;
+});
+
+// Start Buttons
+document.getElementById('btn-start-normal').addEventListener('click', () => {
+    playMode = 'normal';
+    currentLevel = 1;
+    startGame(currentLevel);
+});
+
+document.getElementById('btn-start-random').addEventListener('click', () => {
+    playMode = 'random';
+    currentLevel = getRandomLevel();
+    startGame(currentLevel);
+});
+
 document.getElementById('btn-back').addEventListener('click', showMainMenu);
 document.getElementById('btn-clear').addEventListener('click', clearSequence);
 document.getElementById('btn-play').addEventListener('click', executeSequence);
 
 document.getElementById('btn-next-level').addEventListener('click', () => {
     document.getElementById('success-modal').classList.add('hidden');
-    currentLevel++;
-    if (levels[currentLevel]) {
-        startGame(currentLevel);
+    if (playMode === 'normal') {
+        currentLevel++;
+        if (levels[currentLevel]) {
+            startGame(currentLevel);
+        } else {
+            alert("Has completat tots els nivells, ets una campiona!");
+            showMainMenu();
+        }
     } else {
-        alert("Has completat tots els nivells, ets una campiona!");
-        showMainMenu();
+        // Random mode
+        currentLevel = getRandomLevel();
+        startGame(currentLevel);
     }
 });
 
@@ -101,12 +125,12 @@ document.getElementById('btn-retry').addEventListener('click', () => {
     startGame(currentLevel); 
 });
 
-// Botons de programació (ara amb direccions absolutes)
+// Botons de programació
 document.querySelectorAll('.prog-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         if (isExecuting || currentMode !== 'programming') return;
         const cmdElement = e.target.closest('.cmd-btn');
-        const cmd = cmdElement.dataset.cmd; // 'up', 'down', 'left', 'right'
+        const cmd = cmdElement.dataset.cmd; 
         addCommand(cmd);
     });
 });
@@ -140,6 +164,12 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+function getRandomLevel() {
+    const keys = Object.keys(levels);
+    const randomIndex = Math.floor(Math.random() * keys.length);
+    return parseInt(keys[randomIndex]);
+}
+
 function showMainMenu() {
     gameScreen.classList.remove('active');
     mainMenu.classList.add('active');
@@ -160,7 +190,11 @@ function startGame(levelId) {
     }
     
     const levelData = levels[levelId];
-    levelTitle.textContent = levelData.title;
+    if (playMode === 'random') {
+        levelTitle.textContent = `Nivell Aleatori (${levelData.gridSize}x${levelData.gridSize})`;
+    } else {
+        levelTitle.textContent = levelData.title;
+    }
     
     sequence = [];
     isExecuting = false;
@@ -174,6 +208,13 @@ function startGame(levelId) {
 function renderGrid(levelData) {
     gridElement.innerHTML = '';
     const size = levelData.gridSize;
+    
+    // Calcula la mida de cel·la de forma dinàmica segons la pantalla i el tamany del grid
+    const maxGridWidth = Math.min(window.innerWidth * 0.9, 600); // 90vw o 600px max
+    const calculatedCellSize = Math.floor((maxGridWidth - (size * 4)) / size); // Restem els gaps
+    
+    document.documentElement.style.setProperty('--cell-size', `${calculatedCellSize}px`);
+
     gridElement.style.gridTemplateColumns = `repeat(${size}, var(--cell-size))`;
     gridElement.style.gridTemplateRows = `repeat(${size}, var(--cell-size))`;
     
@@ -183,10 +224,9 @@ function renderGrid(levelData) {
         for (let x = 0; x < size; x++) {
             const cell = document.createElement('div');
             cell.classList.add('cell');
-            cell.classList.add(avatarData.bgClass); // Afegeix la textura de fons
+            cell.classList.add(avatarData.bgClass);
             cell.id = `cell-${x}-${y}`;
             
-            // Comprovem si és un obstacle
             const isObstacle = levelData.obstacles && levelData.obstacles.some(obs => obs.x === x && obs.y === y);
             
             if (isObstacle) {
@@ -195,7 +235,6 @@ function renderGrid(levelData) {
                 cell.classList.add(avatarData.wallClass);
                 cell.innerHTML = avatarData.wallEmoji;
             } else if (levelData.goal.x === x && levelData.goal.y === y) {
-                // Check goal
                 cell.classList.add('goal');
                 cell.innerHTML = avatarData.goal;
             }
@@ -204,7 +243,6 @@ function renderGrid(levelData) {
         }
     }
     
-    // Create player element
     const robot = document.createElement('div');
     robot.id = 'robot';
     robot.innerHTML = avatarData.emoji;
@@ -215,7 +253,7 @@ function renderGrid(levelData) {
 
 function updateRobotPosition() {
     const robot = document.getElementById('robot');
-    const gap = 8;
+    const gap = 4;
     const cellSizeStr = getComputedStyle(document.documentElement).getPropertyValue('--cell-size').trim();
     const cellSize = parseInt(cellSizeStr);
     
@@ -296,22 +334,21 @@ async function executeSequence() {
     isExecuting = false;
 }
 
-// Intentar moure el robot en una direcció absoluta
 async function attemptMove(dirName) {
     let nx = robotState.x;
     let ny = robotState.y;
     
     if (dirName === 'up') {
-        robotState.dir = 3; // Nord (270deg)
+        robotState.dir = 3; 
         ny--;
     } else if (dirName === 'down') {
-        robotState.dir = 1; // Sud (90deg)
+        robotState.dir = 1; 
         ny++;
     } else if (dirName === 'left') {
-        robotState.dir = 2; // Oest (180deg)
+        robotState.dir = 2; 
         nx--;
     } else if (dirName === 'right') {
-        robotState.dir = 0; // Est (0deg)
+        robotState.dir = 0; 
         nx++;
     }
 
@@ -324,7 +361,6 @@ async function attemptMove(dirName) {
         updateRobotPosition();
         return true;
     } else {
-        // Xoc o cau fora
         robotState.x = nx;
         robotState.y = ny;
         updateRobotPosition();
@@ -338,7 +374,6 @@ async function attemptMove(dirName) {
     }
 }
 
-// Lògica de Pilotatge (Direct Move)
 async function handlePilotMove(dirName) {
     if (isExecuting) return;
     isExecuting = true; 
@@ -349,7 +384,7 @@ async function handlePilotMove(dirName) {
         return;
     }
 
-    await delay(300); // Temps per animació curta
+    await delay(300); 
     checkGoal();
     isExecuting = false;
 }
