@@ -271,6 +271,10 @@ body {
     background-size: var(--cell-size) var(--cell-size);
 }
 
+.bg-rumi {
+    background: repeating-linear-gradient(45deg, #ffcc99, #ffcc99 15px, #ffb366 15px, #ffb366 30px);
+}
+
 /* Obstacles */
 .obstacle {
     display: flex;
