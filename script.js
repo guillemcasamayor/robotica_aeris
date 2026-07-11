@@ -575,6 +575,15 @@ function checkGoal() {
 
 function showFail(msg) {
     document.getElementById('fail-message').textContent = msg;
+    
+    const failGif = document.getElementById('fail-gif');
+    if (currentAvatarId === 'rumi') {
+        failGif.src = "https://media1.tenor.com/m/Hh4ImackYXMAAAAd/kpop-demon-hunters-2025.gif";
+        failGif.classList.remove('hidden');
+    } else {
+        failGif.classList.add('hidden');
+    }
+    
     document.getElementById('fail-modal').classList.remove('hidden');
 }
 
