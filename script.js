@@ -1,10 +1,10 @@
 // Configuració de personatges i entorns
 const avatars = {
-    turtle: { emoji: '🐢', goal: '🥬', name: 'Tortuga', bgClass: 'bg-turtle', wallClass: 'wall-generic', wallEmoji: '🧱' },
-    ballerina: { emoji: '💃', goal: '🎵', name: 'Ballerina', bgClass: 'bg-ballerina', wallClass: 'wall-generic', wallEmoji: '🧱' },
-    robot: { emoji: '🛵', goal: '🔋', name: 'Moto Kawaii', bgClass: 'bg-robot', wallClass: 'wall-generic', wallEmoji: '🚧' },
-    space: { emoji: '🚀', goal: '⭐', name: 'Nau Espacial', bgClass: 'bg-space', wallClass: 'wall-space', wallEmoji: '🪨' },
-    rumi: { emoji: '<img src="https://ih1.redbubble.net/image.5955658826.6777/raf,360x360,075,t,fafafa:ca443f4786.jpg" class="avatar-img" alt="Rumi">', goal: '<img src="https://ih1.redbubble.net/image.5869498024.3067/st,large,507x507-pad,600x600,f8f8f8.jpg" class="avatar-img" alt="Ramen">', name: 'Rumi', bgClass: 'bg-rumi', wallClass: 'wall-generic', wallEmoji: '👹' }
+    turtle: { emoji: '🐢', goal: '🥬', itemEmoji: '🍓', name: 'Tortuga', bgClass: 'bg-turtle', wallClass: 'wall-generic', wallEmoji: '🧱' },
+    ballerina: { emoji: '💃', goal: '🎵', itemEmoji: '🎀', name: 'Ballerina', bgClass: 'bg-ballerina', wallClass: 'wall-generic', wallEmoji: '🧱' },
+    robot: { emoji: '🛵', goal: '🔋', itemEmoji: '⛽', name: 'Moto Kawaii', bgClass: 'bg-robot', wallClass: 'wall-generic', wallEmoji: '🚧' },
+    space: { emoji: '🚀', goal: '⭐', itemEmoji: '☄️', name: 'Nau Espacial', bgClass: 'bg-space', wallClass: 'wall-space', wallEmoji: '🪨' },
+    rumi: { emoji: '<img src="https://ih1.redbubble.net/image.5955658826.6777/raf,360x360,075,t,fafafa:ca443f4786.jpg" class="avatar-img" alt="Rumi">', goal: '<img src="https://ih1.redbubble.net/image.5869498024.3067/st,large,507x507-pad,600x600,f8f8f8.jpg" class="avatar-img" alt="Ramen">', itemEmoji: '🥟', name: 'Rumi', bgClass: 'bg-rumi', wallClass: 'wall-generic', wallEmoji: '👹' }
 };
 
 let currentAvatarId = 'turtle';
@@ -29,7 +29,7 @@ const levels = {
     11: { title: "Nivell 11", gridSize: 6, start: { x: 0, y: 3 }, goal: { x: 5, y: 3 }, obstacles: [{x: 2, y: 2}, {x: 2, y: 3}, {x: 2, y: 4}, {x: 4, y: 1}, {x: 4, y: 2}, {x: 4, y: 3}] },
     // 7x7
     12: { title: "Nivell 12", gridSize: 7, start: { x: 0, y: 0 }, goal: { x: 6, y: 6 }, obstacles: [{x: 3, y: 0}, {x: 3, y: 1}, {x: 3, y: 2}, {x: 3, y: 4}, {x: 3, y: 5}, {x: 3, y: 6}] },
-    13: { title: "Nivell 13", gridSize: 7, start: { x: 3, y: 3 }, goal: { x: 0, y: 0 }, obstacles: [{x: 2, y: 2}, {x: 3, y: 2}, {x: 4, y: 2}, {x: 2, y: 3}, {x: 4, y: 3}, {x: 2, y: 4}, {x: 3, y: 4}, {x: 4, y: 4}] },
+    13: { title: "Nivell 13", gridSize: 7, start: { x: 3, y: 3 }, goal: { x: 0, y: 0 }, obstacles: [{x: 2, y: 2}, {x: 4, y: 2}, {x: 2, y: 3}, {x: 4, y: 3}, {x: 2, y: 4}, {x: 3, y: 4}, {x: 4, y: 4}] }, // Fixed impossible wall
     14: { title: "Nivell 14", gridSize: 7, start: { x: 0, y: 6 }, goal: { x: 6, y: 0 }, obstacles: [{x: 1, y: 5}, {x: 2, y: 4}, {x: 3, y: 3}, {x: 4, y: 2}, {x: 5, y: 1}] },
     // 8x8
     15: { title: "Nivell 15", gridSize: 8, start: { x: 0, y: 0 }, goal: { x: 7, y: 7 }, obstacles: [{x: 1, y: 1}, {x: 2, y: 2}, {x: 3, y: 3}, {x: 4, y: 4}, {x: 5, y: 5}, {x: 6, y: 6}, {x: 1, y: 7}, {x: 2, y: 6}, {x: 3, y: 5}] },
@@ -45,6 +45,10 @@ let isExecuting = false;
 let robotState = { x: 0, y: 0, dir: 0 }; 
 let playerName = "Jugador/a";
 
+let collectedItems = 0;
+let totalItems = 0;
+let levelItems = [];
+
 const welcomeScreen = document.getElementById('welcome-screen');
 const mainMenu = document.getElementById('main-menu');
 const gameScreen = document.getElementById('game-screen');
@@ -54,6 +58,82 @@ const scoreVal = document.getElementById('score-val');
 const levelTitle = document.getElementById('level-title');
 const progControls = document.getElementById('prog-controls');
 const pilotControls = document.getElementById('pilot-controls');
+
+// Generador de laberints procedurals amb ítems
+function generateProceduralLevel(size) {
+    while (true) {
+        let level = {
+            title: `Nivell Aleatori (${size}x${size})`,
+            gridSize: size,
+            start: { x: 0, y: 0 },
+            goal: { x: size - 1, y: size - 1 },
+            obstacles: [],
+            items: []
+        };
+        
+        // Posa obstacles aleatoris
+        let numObstacles = Math.floor(size * 1.5);
+        for (let i = 0; i < numObstacles; i++) {
+            let ox = Math.floor(Math.random() * size);
+            let oy = Math.floor(Math.random() * size);
+            if ((ox === 0 && oy === 0) || (ox === size - 1 && oy === size - 1)) continue;
+            if (!level.obstacles.some(o => o.x === ox && o.y === oy)) {
+                level.obstacles.push({ x: ox, y: oy });
+            }
+        }
+        
+        // Posa ítems aleatoris (entre 2 i 4)
+        let numItems = Math.floor(Math.random() * 3) + 2; 
+        let placedItems = 0;
+        let attempts = 0;
+        while (placedItems < numItems && attempts < 100) {
+            attempts++;
+            let ix = Math.floor(Math.random() * size);
+            let iy = Math.floor(Math.random() * size);
+            if ((ix === 0 && iy === 0) || (ix === size - 1 && iy === size - 1)) continue;
+            if (level.obstacles.some(o => o.x === ix && o.y === iy)) continue;
+            if (level.items.some(i => i.x === ix && i.y === iy)) continue;
+            level.items.push({ x: ix, y: iy });
+            placedItems++;
+        }
+        
+        // Valida amb BFS que tot sigui accessible
+        let reachable = getReachableCells(level, size);
+        let goalReachable = reachable.some(r => r.x === level.goal.x && r.y === level.goal.y);
+        let itemsReachable = level.items.every(item => reachable.some(r => r.x === item.x && r.y === item.y));
+        
+        if (goalReachable && itemsReachable) {
+            return level;
+        }
+    }
+}
+
+function getReachableCells(level, size) {
+    let visited = Array.from({length: size}, () => Array(size).fill(false));
+    let queue = [{x: 0, y: 0}];
+    visited[0][0] = true;
+    let reachable = [];
+    
+    let dirs = [[-1,0], [1,0], [0,-1], [0,1]];
+    
+    while(queue.length > 0) {
+        let curr = queue.shift();
+        reachable.push(curr);
+        
+        for (let d of dirs) {
+            let nx = curr.x + d[0];
+            let ny = curr.y + d[1];
+            
+            if (nx >= 0 && nx < size && ny >= 0 && ny < size && !visited[nx][ny]) {
+                if (!level.obstacles.some(o => o.x === nx && o.y === ny)) {
+                    visited[nx][ny] = true;
+                    queue.push({x: nx, y: ny});
+                }
+            }
+        }
+    }
+    return reachable;
+}
 
 // Gestió de selecció de personatge
 document.querySelectorAll('.avatar-btn').forEach(btn => {
@@ -96,8 +176,7 @@ document.getElementById('btn-start-normal').addEventListener('click', () => {
 
 document.getElementById('btn-start-random').addEventListener('click', () => {
     playMode = 'random';
-    currentLevel = getRandomLevel();
-    startGame(currentLevel);
+    startGame('random');
 });
 
 document.getElementById('btn-back').addEventListener('click', showMainMenu);
@@ -116,8 +195,7 @@ document.getElementById('btn-next-level').addEventListener('click', () => {
         }
     } else {
         // Random mode
-        currentLevel = getRandomLevel();
-        startGame(currentLevel);
+        startGame('random');
     }
 });
 
@@ -165,12 +243,6 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-function getRandomLevel() {
-    const keys = Object.keys(levels);
-    const randomIndex = Math.floor(Math.random() * keys.length);
-    return parseInt(keys[randomIndex]);
-}
-
 function showMainMenu() {
     gameScreen.classList.remove('active');
     mainMenu.classList.add('active');
@@ -190,29 +262,51 @@ function startGame(levelId) {
         pilotControls.classList.remove('hidden');
     }
     
-    const levelData = levels[levelId];
+    let levelData;
     if (playMode === 'random') {
-        levelTitle.textContent = `Nivell Aleatori (${levelData.gridSize}x${levelData.gridSize})`;
+        let randomSize = Math.floor(Math.random() * 3) + 6; // 6, 7 o 8
+        levelData = generateProceduralLevel(randomSize);
+        levels['random'] = levelData;
+        currentLevel = 'random';
     } else {
-        levelTitle.textContent = levelData.title;
+        levelData = levels[levelId];
     }
+    
+    levelTitle.textContent = levelData.title;
     
     sequence = [];
     isExecuting = false;
     updateQueueUI();
     
     robotState = { ...levelData.start, dir: 0 }; 
+    levelItems = levelData.items ? [...levelData.items] : [];
+    totalItems = levelItems.length;
+    collectedItems = 0;
     
+    updateItemCounterUI();
     renderGrid(levelData);
+}
+
+function updateItemCounterUI() {
+    const container = document.getElementById('item-counter-container');
+    const val = document.getElementById('items-val');
+    const emojiDisplay = document.getElementById('item-emoji-display');
+    
+    if (totalItems > 0) {
+        container.classList.remove('hidden');
+        emojiDisplay.textContent = avatars[currentAvatarId].itemEmoji || '💎';
+        val.textContent = `${collectedItems} / ${totalItems}`;
+    } else {
+        container.classList.add('hidden');
+    }
 }
 
 function renderGrid(levelData) {
     gridElement.innerHTML = '';
     const size = levelData.gridSize;
     
-    // Calcula la mida de cel·la de forma dinàmica segons la pantalla i el tamany del grid
-    const maxGridWidth = Math.min(window.innerWidth * 0.9, 600); // 90vw o 600px max
-    const calculatedCellSize = Math.floor((maxGridWidth - (size * 4)) / size); // Restem els gaps
+    const maxGridWidth = Math.min(window.innerWidth * 0.9, 600); 
+    const calculatedCellSize = Math.floor((maxGridWidth - (size * 4)) / size); 
     
     document.documentElement.style.setProperty('--cell-size', `${calculatedCellSize}px`);
 
@@ -238,6 +332,14 @@ function renderGrid(levelData) {
             } else if (levelData.goal.x === x && levelData.goal.y === y) {
                 cell.classList.add('goal');
                 cell.innerHTML = avatarData.goal;
+            } else {
+                let hasItem = levelItems.some(i => i.x === x && i.y === y);
+                if (hasItem) {
+                    let itemDiv = document.createElement('div');
+                    itemDiv.classList.add('item');
+                    itemDiv.innerHTML = avatarData.itemEmoji || '💎';
+                    cell.appendChild(itemDiv);
+                }
             }
             
             gridElement.appendChild(cell);
@@ -307,8 +409,13 @@ async function executeSequence() {
     if (sequence.length === 0 || isExecuting) return;
     isExecuting = true;
     
+    // Reset state before running
     robotState = { ...levels[currentLevel].start, dir: 0 };
-    updateRobotPosition();
+    levelItems = levels[currentLevel].items ? [...levels[currentLevel].items] : [];
+    collectedItems = 0;
+    updateItemCounterUI();
+    renderGrid(levels[currentLevel]);
+    
     await delay(500); 
     
     for (let i = 0; i < sequence.length; i++) {
@@ -359,6 +466,20 @@ async function attemptMove(dirName) {
     if (nx >= 0 && nx < size && ny >= 0 && ny < size && !isObstacle) {
         robotState.x = nx;
         robotState.y = ny;
+        
+        // Comprovar si recollim ítem
+        let itemIndex = levelItems.findIndex(i => i.x === nx && i.y === ny);
+        if (itemIndex !== -1) {
+            levelItems.splice(itemIndex, 1);
+            collectedItems++;
+            updateItemCounterUI();
+            
+            // Eliminar ítem del DOM
+            let cell = document.getElementById(`cell-${nx}-${ny}`);
+            let itemEl = cell.querySelector('.item');
+            if (itemEl) itemEl.remove();
+        }
+
         updateRobotPosition();
         return true;
     } else {
@@ -393,11 +514,16 @@ async function handlePilotMove(dirName) {
 function checkGoal() {
     const goal = levels[currentLevel].goal;
     if (robotState.x === goal.x && robotState.y === goal.y) {
-        score += 10;
-        scoreVal.textContent = score;
-        document.getElementById('success-modal').classList.remove('hidden');
+        if (collectedItems === totalItems) {
+            score += 10;
+            scoreVal.textContent = score;
+            document.getElementById('success-message').textContent = `Ho has aconseguit, ${playerName}!`;
+            document.getElementById('success-modal').classList.remove('hidden');
+        } else {
+            showFail(`Et falten ${totalItems - collectedItems} objectes per recollir!`);
+        }
     } else if (currentMode === 'programming') {
-        showFail(`No hem arribat a ${avatars[currentAvatarId].goal}`);
+        showFail(`No hem arribat a l'objectiu!`);
     }
 }
 

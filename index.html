@@ -78,7 +78,12 @@
         <div id="game-screen" class="screen">
             <header class="game-header">
                 <button id="btn-back" class="icon-btn">🔙 Inici</button>
-                <h2 id="level-title">Nivell 1</h2>
+                <div style="display:flex; flex-direction:column; align-items:center;">
+                    <h2 id="level-title">Nivell 1</h2>
+                    <div id="item-counter-container" class="hidden" style="font-size: 1.2rem; font-weight: 600; margin-top: 5px; background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 10px;">
+                        <span id="item-emoji-display">💎</span> <span id="items-val">0 / 0</span>
+                    </div>
+                </div>
                 <div class="score">⭐ <span id="score-val">0</span></div>
             </header>
 
