@@ -4,7 +4,7 @@ const avatars = {
     ballerina: { emoji: '💃', goal: '🎵', itemEmoji: '🎀', name: 'Ballerina', bgClass: 'bg-ballerina', wallClass: 'wall-generic', wallEmoji: '🧱' },
     robot: { emoji: '🛵', goal: '🔋', itemEmoji: '⛽', name: 'Moto Kawaii', bgClass: 'bg-robot', wallClass: 'wall-generic', wallEmoji: '🚧' },
     space: { emoji: '🚀', goal: '⭐', itemEmoji: '☄️', name: 'Nau Espacial', bgClass: 'bg-space', wallClass: 'wall-space', wallEmoji: '🪨' },
-    rumi: { emoji: '<img src="https://ih1.redbubble.net/image.5955658826.6777/raf,360x360,075,t,fafafa:ca443f4786.jpg" class="avatar-img" alt="Rumi">', goal: '<img src="https://ih1.redbubble.net/image.5869498024.3067/st,large,507x507-pad,600x600,f8f8f8.jpg" class="avatar-img" alt="Ramen">', itemEmoji: '🥟', name: 'Rumi', bgClass: 'bg-rumi', wallClass: 'wall-generic', wallEmoji: '👹' }
+    rumi: { emoji: '<img src="https://ih1.redbubble.net/image.5955658826.6777/raf,360x360,075,t,fafafa:ca443f4786.jpg" class="avatar-img" alt="Rumi">', goal: '<img src="https://ih1.redbubble.net/image.5869498024.3067/st,large,507x507-pad,600x600,f8f8f8.jpg" class="avatar-img" alt="Ramen">', itemEmoji: '🥟', name: 'Rumi', bgClass: 'bg-rumi', wallClass: 'wall-generic', wallEmoji: '<img src="https://pic2-cdn.creality.com/comp/model/2804761eb9519b521e5796adca77532f.webp?x-oss-process=image/ignore-error,1" class="avatar-img" alt="Saja Boy">' }
 };
 
 let currentAvatarId = 'turtle';
@@ -240,7 +240,23 @@ document.querySelectorAll('.pilot-btn').forEach(btn => {
 
 // Controls de teclat
 document.addEventListener('keydown', (e) => {
-    if (gameScreen.classList.contains('active') && !isExecuting) {
+    const successModal = document.getElementById('success-modal');
+    const failModal = document.getElementById('fail-modal');
+    
+    // Controls pels modals
+    if ((e.key === 'Enter' || e.key === ' ') && gameScreen.classList.contains('active')) {
+        if (!successModal.classList.contains('hidden')) {
+            e.preventDefault();
+            document.getElementById('btn-next-level').click();
+            return;
+        } else if (!failModal.classList.contains('hidden')) {
+            e.preventDefault();
+            document.getElementById('btn-retry').click();
+            return;
+        }
+    }
+
+    if (gameScreen.classList.contains('active') && !isExecuting && successModal.classList.contains('hidden') && failModal.classList.contains('hidden')) {
         let cmd = null;
         if (e.key === 'ArrowUp') cmd = 'up';
         if (e.key === 'ArrowDown') cmd = 'down';
@@ -248,6 +264,7 @@ document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') cmd = 'right';
 
         if (cmd) {
+            e.preventDefault(); // Evita que la pàgina faci scroll
             if (currentMode === 'piloting') {
                 handlePilotMove(cmd);
             } else if (currentMode === 'programming') {
