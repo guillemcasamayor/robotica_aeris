@@ -52,10 +52,8 @@
             </div>
 
             <p style="margin-top: 20px;">A quin nivell vols jugar?</p>
-            <div class="level-selector">
-                <button class="level-btn" data-level="1">Nivell 1</button>
-                <button class="level-btn" data-level="2">Nivell 2</button>
-                <button class="level-btn" data-level="3">Nivell 3</button>
+            <div class="level-selector" id="level-selector-container">
+                <!-- Levels injected by JS -->
             </div>
         </div>
 
@@ -78,10 +76,15 @@
                     
                     <!-- Programming Controls -->
                     <div id="prog-controls" class="control-view">
-                        <div class="available-commands">
-                            <button class="cmd-btn prog-btn" data-cmd="forward">⬆️</button>
-                            <button class="cmd-btn prog-btn" data-cmd="left">↩️</button>
-                            <button class="cmd-btn prog-btn" data-cmd="right">↪️</button>
+                        <div class="pilot-pad" style="margin-top: 0;">
+                            <div class="pad-row">
+                                <button class="cmd-btn prog-btn" data-cmd="up">⬆️</button>
+                            </div>
+                            <div class="pad-row">
+                                <button class="cmd-btn prog-btn" data-cmd="left">⬅️</button>
+                                <button class="cmd-btn prog-btn" data-cmd="down">⬇️</button>
+                                <button class="cmd-btn prog-btn" data-cmd="right">➡️</button>
+                            </div>
                         </div>
 
                         <div class="sequence-queue-wrapper">
