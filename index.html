@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventures per a l'Aeris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Main Menu -->
+        <div id="main-menu" class="screen active">
+            <header>
+                <h1>✨ Aventures de l'Aeris ✨</h1>
+                <p>Escull el teu personatge!</p>
+            </header>
+            
+            <div class="avatar-selector">
+                <button class="avatar-btn selected" data-avatar="turtle" data-emoji="🐢" data-goal="🥬">
+                    <span class="avatar-emoji">🐢</span>
+                    <span class="avatar-name">Tortuga</span>
+                </button>
+                <button class="avatar-btn" data-avatar="ballerina" data-emoji="💃" data-goal="🎵">
+                    <span class="avatar-emoji">💃</span>
+                    <span class="avatar-name">Ballerina</span>
+                </button>
+                <button class="avatar-btn" data-avatar="robot" data-emoji="👾" data-goal="🔋">
+                    <span class="avatar-emoji">👾</span>
+                    <span class="avatar-name">Robot</span>
+                </button>
+                <button class="avatar-btn" data-avatar="space" data-emoji="🚀" data-goal="⭐">
+                    <span class="avatar-emoji">🚀</span>
+                    <span class="avatar-name">Nau</span>
+                </button>
+            </div>
+
+            <p style="margin-top: 10px; font-size: 1.2rem;">Escull el mode de joc:</p>
+            <div class="mode-selector">
+                <button class="mode-btn selected" data-mode="programming">
+                    <div class="mode-icon">🤖</div>
+                    <div class="mode-title">Programació</div>
+                    <div class="mode-desc">Crea una seqüència de passos</div>
+                </button>
+                <button class="mode-btn" data-mode="piloting">
+                    <div class="mode-icon">🎮</div>
+                    <div class="mode-title">Pilotatge</div>
+                    <div class="mode-desc">Mou-te lliurement amb les fletxes</div>
+                </button>
+            </div>
+
+            <p style="margin-top: 20px;">A quin nivell vols jugar?</p>
+            <div class="level-selector">
+                <button class="level-btn" data-level="1">Nivell 1</button>
+                <button class="level-btn" data-level="2">Nivell 2</button>
+                <button class="level-btn" data-level="3">Nivell 3</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <header class="game-header">
+                <button id="btn-back" class="icon-btn">🔙 Inici</button>
+                <h2 id="level-title">Nivell 1</h2>
+                <div class="score">⭐ <span id="score-val">0</span></div>
+            </header>
+
+            <div class="game-area">
+                <!-- Grid Area -->
+                <div class="grid-container">
+                    <div id="grid"></div>
+                </div>
+
+                <!-- Controls Area -->
+                <div class="controls-panel glass-panel">
+                    
+                    <!-- Programming Controls -->
+                    <div id="prog-controls" class="control-view">
+                        <div class="available-commands">
+                            <button class="cmd-btn prog-btn" data-cmd="forward">⬆️</button>
+                            <button class="cmd-btn prog-btn" data-cmd="left">↩️</button>
+                            <button class="cmd-btn prog-btn" data-cmd="right">↪️</button>
+                        </div>
+
+                        <div class="sequence-queue-wrapper">
+                            <div id="sequence-queue">
+                                <!-- Commands will appear here -->
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button id="btn-clear" class="danger-btn">🗑️</button>
+                            <button id="btn-play" class="primary-btn">▶️ GO!</button>
+                        </div>
+                    </div>
+
+                    <!-- Piloting Controls -->
+                    <div id="pilot-controls" class="control-view hidden">
+                        <p style="text-align: center; margin-bottom: 10px; font-size: 1.2rem;">Fes servir el teclat o els botons!</p>
+                        <div class="pilot-pad">
+                            <div class="pad-row">
+                                <button class="cmd-btn pilot-btn" data-cmd="up">⬆️</button>
+                            </div>
+                            <div class="pad-row">
+                                <button class="cmd-btn pilot-btn" data-cmd="left">⬅️</button>
+                                <button class="cmd-btn pilot-btn" data-cmd="down">⬇️</button>
+                                <button class="cmd-btn pilot-btn" data-cmd="right">➡️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+            <!-- Success Modal -->
+            <div id="success-modal" class="modal hidden">
+                <div class="modal-content glass-panel">
+                    <h2>🎉 Visca! 🎉</h2>
+                    <p>Ho has aconseguit, Aeris!</p>
+                    <button id="btn-next-level" class="primary-btn">Següent ➡️</button>
+                </div>
+            </div>
+            
+            <!-- Fail Modal -->
+            <div id="fail-modal" class="modal hidden">
+                <div class="modal-content glass-panel">
+                    <h2>💥 Ui! 💥</h2>
+                    <p id="fail-message">No hem arribat a l'objectiu.</p>
+                    <button id="btn-retry" class="primary-btn">🔄 Tornem-hi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
